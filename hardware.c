@@ -175,7 +175,14 @@ int hw_get_module_by_class(const char *class_id, const char *inst,
      */
 
     /* First try a property specific to the class and possibly instance */
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
+#endif
     snprintf(prop_name, sizeof(prop_name), "ro.hardware.%s", name);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     if (property_get(prop_name, prop, NULL) > 0) {
         if (hw_module_exists(path, sizeof(path), name, prop) == 0) {
             goto found;
